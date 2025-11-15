@@ -15,6 +15,7 @@
 
 # next.js
 /.next/
+renderer/.next/
 /out/
 
 # production
@@ -35,6 +36,11 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# database
+*.db
+*.sqlite
+*.sqlite3
 
 # typescript
 *.tsbuildinfo
