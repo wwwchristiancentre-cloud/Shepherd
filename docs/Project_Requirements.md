@@ -1,0 +1,41 @@
+# Project Requirements Document: Shepherd
+
+## 1. Overview
+Shepherd is a local-first, AI-assisted production system designed for church media teams. It automates the workflow from live production capture to post-production delivery, leveraging local AI models to minimize manual effort and streamline content creation.
+
+## 2. Functional Requirements
+
+| Requirement ID | Description                                                  | User Story                                                                                    | Expected Behavior/Outcome                                                                                                   | Status |
+| :------------- | :----------------------------------------------------------- | :-------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------- | :----- |
+| **MUS**        | **Minimum Usable State**                                     |                                                                                               |                                                                                                                             |        |
+| FR-001         | Project Creation & Folder Structure                          | As a media operator, I want to create a new project with one click, so that a standardized folder structure is automatically generated for me. | User clicks "New Project," enters a name (e.g., "Sunday Service 2024-08-11"), and the system creates the necessary subfolders. | MUS    |
+| FR-002         | Local Audio Transcription                                    | As an editor, I want to import an audio file from a project, so that the system automatically transcribes it using a local Whisper model. | The backend exposes an endpoint to trigger transcription. The frontend displays the transcript with timestamps in a dedicated panel. | MUS    |
+| FR-003         | Sermon Segmentation (Audio-based)                            | As an editor, I want the system to automatically detect and suggest sermon segments, so that I can quickly isolate the main content.      | The system analyzes the audio for patterns (silence, energy levels) to propose start/end times for segments like "Sermon".    | MUS    |
+| FR-004         | AI Content Generation                                        | As a content manager, I want the system to generate a title, summary, and description for the sermon, so that I can quickly prepare it for publishing. | Using the sermon transcript, a local LLM generates metadata suggestions that the user can review and edit.                     | MUS    |
+| FR-005         | Audio Export Pipeline                                        | As a media operator, I want to export the final sermon audio in different formats (e.g., full mix, podcast), so that I can upload them easily. | The system uses FFmpeg to run an export chain that normalizes audio, applies basic noise reduction, and creates output files.    | MUS    |
+| FR-006         | Basic Project Dashboard                                      | As a user, I want a central dashboard to see all my projects, so that I can easily manage them (list, rename, archive). | The main UI of the Electron app is a dashboard listing all created projects, with actions available for each.                 | MUS    |
+| **Future**     | **Post-MUS Features**                                        |                                                                                               |                                                                                                                             |        |
+| FR-101         | Multi-User Collaboration                                     | As a team lead, I want my team members to access projects over the local network, so that we can collaborate on editing and exporting. | A shared database (e.g., Postgres on a local server) and file sync mechanism allows multiple instances of Shepherd to see the same data. | Future |
+| FR-102         | AI Video Scene Detection                                     | As a video editor, I want the system to analyze the video feed and detect scene changes (e.g., speaker vs. worship band). | A vision model processes the video file to create markers on a timeline corresponding to significant visual changes.              | Future |
+| FR-103         | Auto-Thumbnail Generation                                    | As a content manager, I want the system to suggest compelling thumbnails from the video, so that I don't have to scrub through footage manually. | The system identifies frames with good composition and clear subjects (e.g., faces) and presents them as thumbnail options.     | Future |
+| FR-104         | Advanced AI Audio Cleanup                                    | As an audio engineer, I want to use AI-powered tools to clean up audio, so that I can quickly fix issues like reverb and background noise. | Integration of advanced audio processing models (e.g., dereverberation, spectral noise gating) into the export pipeline.         | Future |
+| FR-105         | Searchable Sermon Archive                                    | As a pastor, I want to search through all past sermons by topic or keyword, so that I can easily find and reference previous content. | Transcripts are indexed in a vector database (Chroma/Qdrant), enabling semantic search across the entire project archive.          | Future |
+| FR-201         | Real-Time Stream Companion                                   | As a live producer, I want real-time suggestions for camera switching in OBS, so that I can produce a more dynamic stream with less effort. | Shepherd monitors the audio feed in real-time and suggests OBS scene changes based on who is speaking or if music starts.          | Future |
+| FR-202         | Cloud Publishing Integration                                 | As a content manager, I want to publish final media directly to YouTube and podcast platforms, so that I can streamline the distribution process. | Integration with YouTube and other platform APIs to allow direct, metadata-rich uploads from the Shepherd dashboard.              | Future |
+
+## 3. Core Technologies & Dependencies
+
+This section lists the specific technologies and tools chosen for the MVP. The implementation instructions (e.g., download links, installation commands) will be detailed in the development tasks.
+
+| Category      | Technology / Tool        | Version / Specification                | Role                                                       |
+| :------------ | :----------------------- | :------------------------------------- | :--------------------------------------------------------- |
+| **Frontend**  | Electron                 | Latest Stable                          | Desktop application shell.                                 |
+|               | Next.js                  | Latest Stable (App Router)             | UI framework for the webview content.                      |
+|               | TypeScript               | Strict Mode                            | Language for type safety.                                  |
+|               | Tailwind CSS             | Latest Stable                          | Utility-first CSS framework for styling.                   |
+| **Backend**   | FastAPI                  | Latest Stable                          | High-performance Python web framework for the local server.|
+| **AI Models** | Whisper (via whisper.cpp)| `medium` model                         | Local, high-performance speech-to-text transcription.      |
+|               | Llama / Mistral (via llama.cpp) | 7B/8B parameter, GGUF (quantized) | Local language model for summarization, titles, etc.       |
+| **Automation**| FFmpeg                   | Latest Stable                          | Core tool for all audio/video processing and exporting.    |
+|               | ReaScript / OBS WebSockets | TBD                                    | APIs for controlling REAPER and OBS.                       |
+| **Database**  | SQLite                   | v3                                     | Local, file-based database for project metadata.           |v
