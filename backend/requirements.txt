@@ -3,3 +3,8 @@ uvicorn[standard]
 python-multipart
 aiosqlite
 pydantic
+# openai-whisper requires numba, but numba does not support Python 3.14.
+# Install with: pip install --no-deps openai-whisper
+# After installing torch and numpy.
+torch>=2.0.0
+numpy>=1.21.0

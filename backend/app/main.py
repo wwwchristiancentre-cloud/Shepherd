@@ -25,4 +25,7 @@ async def startup_event():
         await db.commit()
 
 from .api.projects import router as projects_router
+from .api.transcription import router as transcription_router
+
 app.include_router(projects_router)
+app.include_router(transcription_router)
