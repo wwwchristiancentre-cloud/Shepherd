@@ -22,7 +22,7 @@ def get_whisper_model():
         start_time = time.time()
         try:
             # Download and load medium model locally (balances accuracy vs speed)
-            _whisper_model = whisper.load_model("medium", download_root="./models")
+            _whisper_model = whisper.load_model("medium", download_root="./backend/models")
             load_time = time.time() - start_time
             print(".2f")
         except Exception as e:

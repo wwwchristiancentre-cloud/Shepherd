@@ -4,7 +4,7 @@
   "main": "main/main.js",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"cd renderer && npx next dev\" \"echo 'Please run backend manually with: cd backend && python -m uvicorn app.main:app --reload'\"",
+    "dev": "concurrently \"cd renderer && npx next dev\" \"py -3.11 -m uvicorn backend.app.main:app --reload\"",
     "dev-electron": "concurrently \"cd renderer && npx next dev\" \"tsx main/main.ts\"",
     "build": "npm run build-renderer && npm run build-electron",
     "build-renderer": "cd renderer && npx next build",

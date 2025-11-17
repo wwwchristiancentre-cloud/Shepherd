@@ -42,6 +42,27 @@ yarn-error.log*
 *.sqlite
 *.sqlite3
 
+# python virtual environments
+venv
+venv311
+
+# AI models (large files, downloaded at runtime)
+models/
+backend/models/
+backend/models/*pt
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# runtime generated files
+*.pyc
+__pycache__/
+.pytest_cache/
+.cache/
+
+# temporary files
+*.tmp
+*.temp
+temp/
+.tmp/
