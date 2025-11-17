@@ -8,3 +8,7 @@ pydantic
 # After installing torch and numpy.
 torch>=2.0.0
 numpy>=1.21.0
+librosa>=0.10.0
+pydub>=0.25.0
+scipy>=1.9.0
+scikit-learn>=1.2.0

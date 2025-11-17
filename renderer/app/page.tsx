@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 type Project = {
   id: number;
@@ -33,11 +34,13 @@ function formatTimestamp(seconds: number): string {
 }
 
 export default function Home() {
+  const router = useRouter()
   const [projects, setProjects] = useState<Project[]>([])
   const [showModal, setShowModal] = useState(false)
   const [newProjectName, setNewProjectName] = useState('')
   const [transcript, setTranscript] = useState<TranscriptResult | null>(null)
   const [isTranscribing, setIsTranscribing] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   useEffect(() => {
     fetchProjects()
@@ -138,8 +141,11 @@ export default function Home() {
                 Created: {new Date(project.created_at).toLocaleDateString()}
               </p>
               <div className="mt-4 flex gap-2">
-                <button className="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded text-sm">
-                  Open
+                <button
+                  onClick={() => router.push(`/projects/${project.id}`)}
+                  className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-sm text-white transition-colors"
+                >
+                  Open Project
                 </button>
               </div>
             </div>
@@ -252,9 +258,9 @@ export default function Home() {
               <button
                 onClick={createProject}
                 disabled={!newProjectName.trim()}
-                className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed px-4 py-2 rounded font-medium transition-colors"
+                className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 px-4 py-2 rounded font-medium transition-colors"
               >
-                Create
+                Create Project
               </button>
             </div>
           </div>

@@ -1,12 +1,11 @@
 from pydantic import BaseModel
 from datetime import datetime
+from typing import Optional
 
-class ProjectBase(BaseModel):
+class ProjectCreate(BaseModel):
     name: str
 
-class ProjectCreate(ProjectBase):
-    pass
-
-class Project(ProjectBase):
+class Project(BaseModel):
     id: int
+    name: str
     created_at: datetime

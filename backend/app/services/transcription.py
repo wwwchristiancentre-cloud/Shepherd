@@ -31,7 +31,7 @@ def get_whisper_model():
             raise
     return _whisper_model
 
-def transcript_audio(audio_path: str) -> dict:
+def transcript_audio(audio_path: str, language: str = None) -> dict:
     """
     Transcribe audio file using local OpenAI Whisper model
     Returns transcript with timestamps and segments as required by FR-002
@@ -50,8 +50,16 @@ def transcript_audio(audio_path: str) -> dict:
         print(f"Starting transcription for: {audio_path}")
         start_time = time.time()
 
-        # Run local Whisper transcription
-        result = model.transcribe(audio_path)
+        # Prepare transcription parameters
+        if language and language.lower() == "english":
+            # Force English for better accuracy
+            result = model.transcribe(audio_path, language="english")
+        elif language and language.lower() != "auto":
+            # Force specific language
+            result = model.transcribe(audio_path, language=language)
+        else:
+            # Auto-detect language (default behavior)
+            result = model.transcribe(audio_path)
 
         transcription_time = time.time() - start_time
         print(".2f")
